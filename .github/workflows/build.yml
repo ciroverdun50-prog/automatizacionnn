@@ -1,0 +1,33 @@
+name: Build CiroxzClient JAR
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Build with Javac & Jar
+      run: |
+        mkdir -p bin
+        find src/main/java -name "*.java" > sources.txt
+        javac -d bin @sources.txt
+        jar cfe ciroxz-v1.jar com.ciroxz.client.CiroxzClientGUI -C bin .
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ciroxz-v1-jar
+        path: ciroxz-v1.jar
