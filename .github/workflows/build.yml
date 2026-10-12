@@ -22,7 +22,7 @@ jobs:
     - name: Build with Javac & Jar
       run: |
         mkdir -p bin
-        find src/main/java -name "*.java" > sources.txt
+        find . -name "*.java" > sources.txt
         javac -d bin @sources.txt
         jar cfe ciroxz-v1.jar com.ciroxz.client.CiroxzClientGUI -C bin .
 
